@@ -26,7 +26,7 @@ SECRET_KEY = '8x38p(s@5qv2vqm#1=@7azf$0jo8@x%bhrq^lfjvcxi1nyw-a$'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = "user_account.UserAccount"
 
 # Application definition
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'task',
     'rest_framework',
+    'user_account'
 ]
 
 MIDDLEWARE = [
