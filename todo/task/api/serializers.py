@@ -4,19 +4,16 @@ from ..models import Task, List
 
 User_Account = get_user_model()
 
-
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ('id','description','created','finish','primary','done')
+        fields = '__all__'
         extra_kwargs = {
             'id': {'read_only': True}
         }
 
     def create(self, validated_data):
-        task = Task(
-                description=validated_data['description']
-                )
+        task = Task(description=validated_data['description'])
         task.save()
         return task
 
@@ -29,10 +26,10 @@ class TaskSerializer(serializers.ModelSerializer):
         return instance
 
 class ListSerializer(serializers.ModelSerializer):
-    tasks = TaskSerializer()
-    
+    tasks = TaskSerializer(read_only=True, many=True)
+
     class Meta:
-        model = Task
+        model = List
         fields = ('id','user','title', 'tasks')
         extra_kwargs = {
             'id': {'read_only': True}
@@ -47,6 +44,6 @@ class ListSerializer(serializers.ModelSerializer):
         return list
 
     def update(self, instance, validated_data):
-        instance.title = validated_data.get('title', instance.description)
+        instance.title = validated_data.get('title', instance.title)
         instance.save()
         return instance
