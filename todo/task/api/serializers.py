@@ -1,20 +1,20 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from ..models import Task
+from ..models import Task, List
 
 User_Account = get_user_model()
+
 
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ('id','user','description','created','finish','primary','done')
+        fields = ('id','description','created','finish','primary','done')
         extra_kwargs = {
             'id': {'read_only': True}
         }
 
     def create(self, validated_data):
         task = Task(
-                user=validated_data['user'],
                 description=validated_data['description']
                 )
         task.save()
@@ -25,5 +25,28 @@ class TaskSerializer(serializers.ModelSerializer):
         instance.finish = validated_data.get('finish', instance.finish)
         instance.primary = validated_data.get('primary', instance.primary)
         instance.done = validated_data.get('done', instance.done)
+        instance.save()
+        return instance
+
+class ListSerializer(serializers.ModelSerializer):
+    tasks = TaskSerializer()
+    
+    class Meta:
+        model = Task
+        fields = ('id','user','title', 'tasks')
+        extra_kwargs = {
+            'id': {'read_only': True}
+        }
+
+    def create(self, validated_data):
+        list = List(
+                user=validated_data['user'],
+                title=validated_data['title']
+                )
+        list.save()
+        return list
+
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title', instance.description)
         instance.save()
         return instance
