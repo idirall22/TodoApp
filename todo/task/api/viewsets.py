@@ -31,7 +31,7 @@ class PermissionOwner():
 
 # LIST ****************************************************
 
-class ListAPIViewSet(generics.ListAPIView):
+class ListAPIViewSet(PermissionOwner, generics.ListAPIView):
     """ Retrive Lists of a User Authenticated """
 
     permission_classes = (IsAuthenticated,)
@@ -40,7 +40,8 @@ class ListAPIViewSet(generics.ListAPIView):
     def get_queryset(self):
         return List.objects.filter(user=self.request.user)
 
-class ListRUDAPIViewSet(generics.RetrieveUpdateDestroyAPIView):
+class ListRUDAPIViewSet(PermissionOwner,
+                        generics.RetrieveUpdateDestroyAPIView):
     """ User Authenticated can delete, update, and retrive
         single list"""
 
@@ -51,7 +52,7 @@ class ListRUDAPIViewSet(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return List.objects.filter(user=self.request.user)
 
-class CreateListAPIViewSet(generics.CreateAPIView):
+class CreateListAPIViewSet(PermissionOwner, generics.CreateAPIView):
     """ User Authenticated can create list """
 
     permission_classes = (IsAuthenticated,)
