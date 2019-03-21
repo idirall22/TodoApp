@@ -17,6 +17,8 @@ class TaskApi(TestCase):
         self.user = UserAccount.objects.create(username="user",
                                                 password ="password")
         self.list = List.objects.create(user= self.user, title="list 01")
+        self.task = Task.objects.create(description='task 01')
+        self.list.tasks.add(self.task)
         self.token = Token.objects.get(user=self.user)
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
 
@@ -30,7 +32,7 @@ class TaskApi(TestCase):
 
     def test_get_single_list(self):
         response = self.client.get(reverse('todo_list_rud',
-                                            args=(str(self.list.id),)))
+                                                args=(self.list.id,)))
         serializer = ListSerializer(self.list, many=False)
 
         self.assertEqual(response.data, serializer.data)
@@ -60,4 +62,45 @@ class TaskApi(TestCase):
     def test_delete_single_list(self):
         response = self.client.delete(reverse('todo_list_rud',
                                             args=(str(self.list.id),)))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    # TASK
+
+    def test_get_single_task(self):
+        response = self.client.get(reverse('todo_task_rud',
+                                    args=(self.list.id, self.task.id)))
+        serializer = TaskSerializer(self.task, many=False)
+
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_create_single_task(self):
+        data = {
+            'list_id': self.list.id,
+            'description': 'New task'
+        }
+        response = self.client.post(reverse('todo_task_create'),
+                                            data=data,
+                                            format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_update_single_task(self):
+        data = {
+            'list_id': self.list.id,
+            'description': 'edit task'
+            }
+        response = self.client.put(reverse('todo_task_rud',
+                                            args=(self.list.id, self.task.id)),
+                                            data=data,
+                                            format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_delete_single_task(self):
+        data = {
+            'list_id': self.list.id,
+            }
+        response = self.client.delete(reverse('todo_task_rud',
+                                            args=(self.list.id, self.task.id)))
+
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

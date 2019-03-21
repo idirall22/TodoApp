@@ -15,7 +15,7 @@ urlpatterns = [
     # TASK
     path('tc/', viewsets.CreateTaskAPIViewSet.as_view(),
                 name='todo_task_create'),
-    path('trud/<pk>', viewsets.TaskRUDAPIViewSet.as_view(),
+    path('trud/<list_pk>/<pk>', viewsets.TaskRUDAPIViewSet.as_view(),
                 name='todo_task_rud'),
 
 ]
