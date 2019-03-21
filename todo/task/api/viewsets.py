@@ -10,8 +10,11 @@ from ..models import Task, List
 
 User_Account = get_user_model()
 
-# LIST
+# LIST ****************************************************
 class PermissionOwner():
+    """ This permission allow the user to edit update or delete only
+        his Lists or Tasks"""
+
     def get_object(self):
         instance = self.model.objects.get(pk=self.kwargs['pk'])
         if instance.user != self.request.user:
@@ -20,6 +23,8 @@ class PermissionOwner():
         return instance
 
 class ListAPIViewSet(generics.ListAPIView):
+    """ Retrive Lists of a User Authenticated """
+
     permission_classes = (IsAuthenticated,)
     serializer_class = ListSerializer
 
@@ -28,20 +33,34 @@ class ListAPIViewSet(generics.ListAPIView):
 
 class ListRUDAPIViewSet(PermissionOwner,
                         generics.RetrieveUpdateDestroyAPIView):
+    """ User Authenticated can delete, update, and retrive
+        single list"""
+
+    permission_classes = (IsAuthenticated,)
     serializer_class = ListSerializer
     model = List
 
 class CreateListAPIViewSet(generics.CreateAPIView):
+    """ User Authenticated can create list """
+
+    permission_classes = (IsAuthenticated,)
     serializer_class = ListSerializer
 
-# TASK
+# TASK ****************************************************
 
 class TaskRUDAPIViewSet(PermissionOwner,
                         generics.RetrieveUpdateDestroyAPIView):
+    """ User Authenticated can delete, update, and retrive
+        single task"""
+
+    permission_classes = (IsAuthenticated,)
     serializer_class = ListSerializer
     model = Task
 
 class CreateTaskAPIViewSet(generics.CreateAPIView):
+    """ User Authenticated can create task """
+
+    permission_classes = (IsAuthenticated,)
     serializer_class = TaskSerializer
 
     def create(self, request, *args, **kwargs):
@@ -51,7 +70,7 @@ class CreateTaskAPIViewSet(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         task = serializer.save()
         list.tasks.add(task)
-        
+
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data,
                         status=status.HTTP_201_CREATED,

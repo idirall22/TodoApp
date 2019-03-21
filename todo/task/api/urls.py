@@ -8,7 +8,7 @@ urlpatterns = [
     path('l/', viewsets.ListAPIViewSet.as_view(),
                 name='todo_list_list'),
     path('lrud/<pk>', viewsets.ListRUDAPIViewSet.as_view(),
-                name='todo_list_detail'),
+                name='todo_list_rud'),
     path('lc/', viewsets.CreateListAPIViewSet.as_view(),
                 name='todo_list_create'),
 
