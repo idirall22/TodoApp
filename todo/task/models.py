@@ -12,6 +12,9 @@ class Task(models.Model):
     primary = models.BooleanField(default=False)
     done = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.description
+
 class List(models.Model):
     id = models.UUIDField(primary_key=True,
                         default=uuid.uuid4,
@@ -20,3 +23,6 @@ class List(models.Model):
                             on_delete=models.CASCADE)
     title = models.TextField(max_length=128)
     tasks = models.ManyToManyField(Task, blank=True)
+
+    def __str__(self):
+        return self.title

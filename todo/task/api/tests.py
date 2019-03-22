@@ -3,7 +3,7 @@ from rest_framework.test import APIRequestFactory
 from rest_framework.test import APIClient
 from rest_framework.authtoken.models import Token
 from rest_framework import status
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.urls import reverse
 from task.models import Task, List
 from user_account.models import UserAccount
