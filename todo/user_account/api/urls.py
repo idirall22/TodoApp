@@ -7,7 +7,7 @@ from .viewsets import RegisterUserAccountViewSet
 # router = routers.SimpleRouter()
 # router.register(r'user', UserAccountViewSet)
 
-urlpatterns = [
-    path('register', RegisterUserAccountViewSet.as_view(), name='register')
-]
+# urlpatterns = [
+#     path('register', RegisterUserAccountViewSet.as_view(), name='register')
+# ]
 # urlpatterns = router.urls

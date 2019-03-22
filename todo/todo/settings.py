@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
 
     'corsheaders',
     'rest_framework',
@@ -47,6 +52,7 @@ INSTALLED_APPS = [
     'user_account',
 ]
 
+SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -133,6 +139,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 # REST_FRAMEWORK
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication', 
+        'rest_framework.authentication.TokenAuthentication',
     ],
 }
