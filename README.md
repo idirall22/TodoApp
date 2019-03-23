@@ -1,2 +1,2 @@
 # TodoApp
-This is a sample Todo app using django restframework
+This is a sample Todo app using django rest framework
